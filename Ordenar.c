@@ -70,6 +70,14 @@ void ordernar(lista *cabeca){
     }
 
 }
+void limparMemoria(lista* a){
+    lista *aux;
+    while(a != NULL){
+        aux = a;
+        a = a->prox;
+        free(aux);
+    }
+}
 
 int main(){
     lista *a;
@@ -83,4 +91,5 @@ int main(){
     printarLista(a);
     ordernar(a);
     printarLista(a);
+    limparMemoria(a);
 }
