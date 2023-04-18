@@ -2,10 +2,6 @@
 #include <stack>
 #include <string>
 
-//Klaus Almeida Souza Santos 201920073
-//Gabriel de Souza Matheus Oliveira 202121097
-//Lucas Cardoso Nascimento 202021567
-
 using namespace std;
 
 double avaliarExpressaoPosfixa(string expressao) {
@@ -39,9 +35,21 @@ double avaliarExpressaoPosfixa(string expressao) {
               string s(1,expressao[i]);
               pilha.push(stod(s));
             }
-          
-        } else {
+        
+        } 
+        else if(expressao[i] == '='){
+          i++;
+          string num = "";
+          while(expressao[i]!= '='){
+            num += expressao[i];
+            i++;
+          }
+          pilha.push(stod(num));
+        }
+        else {
             operador = expressao[i];
+            
+           
             if(pilha.empty()){
                 cout << "erro linha 42\n"<< endl;
                 return 0;
@@ -85,10 +93,10 @@ double avaliarExpressaoPosfixa(string expressao) {
                 default:
                     break;
             }
-
-            pilha.push(resultado);
+             pilha.push(resultado);
         }
     }
+      
     if(pilha.empty()){
       cout << "erro linha 89\n"<< endl;
       return 0;
@@ -102,11 +110,19 @@ int main() {
     int n;
     double resultado;
     string coletar;
-    
+    string negativo = "=";
     while(cin >> n && n != 0){
       for(int i = 0; i<n ;i++){
         cin >> coletar;
-        expressao +=coletar;
+        if (coletar.size()>1){
+          negativo += coletar;
+          negativo +='=';
+          expressao +=negativo;
+          negativo = "=";
+        }
+        else{
+          expressao +=coletar;
+        }
       }
       resultado = avaliarExpressaoPosfixa(expressao);
       printf("%.3f\n",resultado);
