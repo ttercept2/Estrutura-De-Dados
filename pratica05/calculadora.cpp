@@ -2,6 +2,10 @@
 #include <stack>
 #include <string>
 
+//Klaus Almeida Souza Santos 201920073
+//Gabriel de Souza Matheus Oliveira 202121097
+//Lucas Cardoso Nascimento 202021567
+
 using namespace std;
 
 double avaliarExpressaoPosfixa(string expressao) {
@@ -21,7 +25,7 @@ double avaliarExpressaoPosfixa(string expressao) {
                 valorString +='.';
                 i++;
               
-                while(isdigit(expressao[i])){
+                while(isdigit(expressao[i]) && expressao[i+1] !='.'){
                   valorString += expressao[i];
                   i++;
                 }
@@ -38,8 +42,16 @@ double avaliarExpressaoPosfixa(string expressao) {
           
         } else {
             operador = expressao[i];
+            if(pilha.empty()){
+                cout << "erro linha 42\n"<< endl;
+                return 0;
+            }
             op2 = pilha.top();
             pilha.pop();
+            if(pilha.empty()){
+                cout << "erro linha 48\n"<< endl;
+                return 0;
+            }
             op1 = pilha.top();
             pilha.pop();
 
@@ -61,21 +73,25 @@ double avaliarExpressaoPosfixa(string expressao) {
                     break;
                 case '^':
                     if(op2 == 0){
-                        resultado = 1;
+                      resultado = 1;
                     }
                     else {
-                        resultado = op1;
-                        for(int i = 2; i<=op2;i++){
-                            resultado *=op1;
-                        }
+                      resultado = op1;
+                      for(int i = 2; i<=op2;i++){
+                        resultado *=op1;
+                      }
                     }
-                    break;
+                    break; 
                 default:
                     break;
             }
 
             pilha.push(resultado);
         }
+    }
+    if(pilha.empty()){
+      cout << "erro linha 89\n"<< endl;
+      return 0;
     }
 
     return pilha.top();
