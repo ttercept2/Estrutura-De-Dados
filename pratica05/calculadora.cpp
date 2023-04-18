@@ -60,10 +60,16 @@ double avaliarExpressaoPosfixa(string expressao) {
                     resultado = op1 / op2;
                     break;
                 case '^':
-                    resultado = op1;
-                    for(int i = 2; i<=op2;i++){
-                      resultado *=op1;
+                    if(op2 == 0){
+                        resultado = 1;
                     }
+                    else {
+                        resultado = op1;
+                        for(int i = 2; i<=op2;i++){
+                            resultado *=op1;
+                        }
+                    }
+                    break;
                 default:
                     break;
             }
