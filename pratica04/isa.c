@@ -1,80 +1,72 @@
+//Klaus Almeida Souza Santos 201920073
+//Gabriel de Souza Matheus Oliveira 202121097
+//Lucas Cardoso Nascimento 202021567
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #define MAX 100
-//KLAUS ALMEIDA SOUZA SANTOS
-//GABRIEL DE SOUZA MATHEUS
-//LUCAS CARDOSO NASCIMENTO
-typedef struct pilha {
-    char dados[MAX];
+
+typedef struct Pilha {
+    int *dados;
     int topo;
-}Pilha;
+} Pilha;
 
-void inicializar(Pilha *p){
-    p->topo = -1;
+Pilha *criar_pilha(int tamanho) {
+    Pilha *pilha = (Pilha *) malloc(sizeof(Pilha));
+    pilha->dados = (int *) malloc(tamanho * sizeof(int));
+    pilha->topo = -1;
+    return pilha;
 }
 
-void empilhar(Pilha *p,char c){
-    p->topo++;
-    p->dados[p->topo]=c;
+void empilhar(int valor, Pilha *pilha) {
+    pilha->topo++;
+    pilha->dados[pilha->topo] = valor;
 }
 
-char desempilhar(Pilha *p){
-    char removido;
-    removido = p->dados[p->topo];
-    p->topo--;
-    return removido;
-    }
-
-int pilhaVazia(Pilha *p){
-    return p->topo == -1;
+int desempilhar(Pilha *pilha) {
+    int valor = pilha->dados[pilha->topo];
+    pilha->topo--;
+    return valor;
 }
 
+int main() {
+    int N, i, valor;
+    char instrucao[10];
+    Pilha *pilha;
 
-int verificarFormato(char *string, int n){
-    Pilha p;
-    int i;
-    int tam = n;
-
-    inicializar(&p);
-
-    for(i=0; string[i]!='C';i++){
-        empilhar(&p,string[i]);
-    }
-    i++;
-
-    while(i<tam){
-        if(pilhaVazia(&p) || string[i] != desempilhar(&p)){
-            return 0;
-        }
-        i++;
-    }
-    return pilhaVazia(&p);
-}
-
-int main(){
-
-    int entradas;
-
-    while(scanf("%d\n",&entradas) == 1 && entradas != 0){
-        char string[entradas];
-
-        for(int i=0; i<entradas; i++){
-            scanf("%c",&string[i]);
+    while (1) {
+        scanf("%d", &N);
+        if (N == 0) {
+            break;
         }
 
-        if(verificarFormato(string, entradas)){
-        printf("SIM\n");
-        }
+        pilha = criar_pilha(MAX);
 
-        else{
-        printf("NAO\n");
+        for (i = 0; i < N; i++) {
+            scanf("%s", instrucao);
+            if (strcmp(instrucao, "BIPUSH") == 0) {
+                scanf("%d", &valor);
+                empilhar(valor, pilha);
+            } else if (strcmp(instrucao, "IADD") == 0) {
+                int valor1 = desempilhar(pilha);
+                int valor2 = desempilhar(pilha);
+                empilhar(valor1 + valor2, pilha);
+            } else if (strcmp(instrucao, "ISUB") == 0) {
+                int valor1 = desempilhar(pilha);
+                int valor2 = desempilhar(pilha);
+                empilhar(valor1 - valor2, pilha);
+            } else if (strcmp(instrucao, "IMUL") == 0) {
+                int valor1 = desempilhar(pilha);
+                int valor2 = desempilhar(pilha);
+                empilhar(valor1 * valor2, pilha);
+            }
         }
+        printf("%d\n", pilha->dados[pilha->topo]);
+        free(pilha->dados);
+        free(pilha);
     }
 
     return 0;
 }
-
-
-
-
